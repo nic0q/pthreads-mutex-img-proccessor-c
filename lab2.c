@@ -6,7 +6,11 @@
 
 #include "funciones.h"
 
+void *sample() { printf("AMIGAZO"); }
 int main(int argc, char *argv[]) {
+  pthread_t td;
+  pthread_create(&td, NULL, &sample, NULL);
+  pthread_join(td, NULL);
   // Se definen las variables a utilizar
   int n = 0, discWidth = 0, chunks = 0, threads = 0, option, IDchild = 0, b = 0;
   char *inputFile = NULL, *outputFile = NULL;
@@ -41,5 +45,5 @@ int main(int argc, char *argv[]) {
         abort();
     }
   }
-  printf("%d %d %d ", threads, chunks, b);
+  // printf("%d %d %d ", threads, chunks, b);
 }
