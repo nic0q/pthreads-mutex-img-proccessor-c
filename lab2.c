@@ -61,16 +61,24 @@ int main(int argc, char *argv[]) {
   anchoDiscos = discWidth;
   chunksPorLeer = chunk;
   openFile(inputFile);
-  pthread_t id;  // Identificador de la hebra
-  pthread_attr_t *hebras;
+ // pthread_t id;  // Identificador de la hebra
+  // pthread_attr_t *hebras;
   void *status;
   cantidadde_lineas = 0;
-  pthread_mutex_init(&mutex, NULL);
-  for (int i = 0; i < threads; i++) {
-    pthread_create(&id, NULL, trabajoHebras, NULL);
-    printf("id: %d\n", i);
+  pthread_t threadsArray[threads];
+  arrayMaster = (float**)calloc(numeroDiscos,sizeof(float*));
+  for(int i = 0; i < 3; i++){
+    arrayMaster[i] = (float*) calloc(3,sizeof(float));
   }
-  for (int i = 0; i < threads; i++) {
-    pthread_join(id, &status);
+  pthread_mutex_init(&mutex, NULL);
+  for (int tid = 0; tid < threads; tid++) {
+    pthread_create(&threadsArray[tid], NULL, trabajoHebras, (void*) tid);
+    //printf("id: %d\n", i);
+  }
+  for (int tid = 0; tid < threads; tid++) {
+    pthread_join(threadsArray[tid], &status);
+  }
+  for(int i = 0; i < numeroDiscos; i++){
+    printf("Ruido: %f\n", arrayMaster[i][2]);
   }
 }

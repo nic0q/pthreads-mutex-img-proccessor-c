@@ -27,7 +27,7 @@ void openFile(char* name) {
     exit(0);
   }
 }
-void readFile() {
+void readFile(int tid) {
   char buffer[1000];
   float u, v, vis[chunksPorLeer][4];
   int disco_actual;
@@ -37,32 +37,34 @@ void readFile() {
     float oDistance = originDistance(u, v);  // Se calcula la distancia de la visibilidad al origen
     int index = getIndexProccess(numeroDiscos, anchoDiscos, oDistance);  // Se determina a que disco pertenece la visibilidad
     vis[cont][0] = index;
-    // printf("%i: %d y %f\n",cantidadde_lineas, index, vis[cont][3]);
+    //printf("Hebra %i: - %i: %d y %f\n",tid, cantidadde_lineas, index, vis[cont][3]);
     cantidadde_lineas++;
     if(cont == chunksPorLeer){
       break;
     }
     cont++;
   }
-  for(int i = 0; i < 4; i++){
+  for(int i = 0; i < chunksPorLeer; i++){
     disco_actual = vis[i][0];
-    masterArray[disco_actual][0] += vis[i][1];
-    masterArray[disco_actual][1] += vis[i][2];
-    masterArray[disco_actual][2] += vis[i][3];
+    arrayMaster[disco_actual][0] += vis[i][1];
+    arrayMaster[disco_actual][1] += vis[i][2];
+    arrayMaster[disco_actual][2] += vis[i][3];
   }
 }
 
-void* trabajoHebras() {
+void* trabajoHebras(void * entrada) {
   int cont = 0;
+  int tid = (int *)entrada;
   while (1 == 1) {
     pthread_mutex_lock(&mutex);  // esto nos bloquea la SC
+    printf("id: %d - %i\n", tid, cont);
     cont += 1;
-    if(cont == 101){
+    if(cont == 100){
       pthread_mutex_unlock(&mutex);
-      printf("%i\n", 9);
+      //printf("%i\n", 9);
       pthread_exit(NULL);
     }
-    readFile();
+    readFile(tid);
     pthread_mutex_unlock(&mutex);
   }
 }
