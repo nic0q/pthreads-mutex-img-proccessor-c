@@ -64,12 +64,13 @@ int main(int argc, char *argv[]) {
   pthread_t id;  // Identificador de la hebra
   pthread_attr_t *hebras;
   void *status;
+  cantidadde_lineas = 0;
   pthread_mutex_init(&mutex, NULL);
-  for (int i = 0; i <= threads; i++) {
+  for (int i = 0; i < threads; i++) {
     pthread_create(&id, NULL, trabajoHebras, NULL);
-    printf("%d", i);
+    printf("id: %d\n", i);
   }
-  for (int i = 0; i <= threads; i++) {
+  for (int i = 0; i < threads; i++) {
     pthread_join(id, &status);
   }
 }

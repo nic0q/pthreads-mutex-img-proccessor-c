@@ -37,6 +37,8 @@ void readFile() {
     float oDistance = originDistance(u, v);  // Se calcula la distancia de la visibilidad al origen
     int index = getIndexProccess(numeroDiscos, anchoDiscos, oDistance);  // Se determina a que disco pertenece la visibilidad
     vis[cont][0] = index;
+    // printf("%i: %d y %f\n",cantidadde_lineas, index, vis[cont][3]);
+    cantidadde_lineas++;
     if(cont == chunksPorLeer){
       break;
     }
@@ -51,12 +53,13 @@ void readFile() {
 }
 
 void* trabajoHebras() {
-  int cont;
+  int cont = 0;
   while (1 == 1) {
     pthread_mutex_lock(&mutex);  // esto nos bloquea la SC
     cont += 1;
-    if(cont == 8){
+    if(cont == 101){
       pthread_mutex_unlock(&mutex);
+      printf("%i\n", 9);
       pthread_exit(NULL);
     }
     readFile();

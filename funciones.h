@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 int numeroDiscos, anchoDiscos, chunksPorLeer;
+int cantidadde_lineas;
 #define CANT_DISCO (4)
-float media_real, media_imaginaria, potencia, ruido_total, masterArray[2][4];
+float media_real, media_imaginaria, potencia, ruido_total, masterArray[4][4];
 pthread_mutex_t mutex;
 
 void openFile(char* name);
