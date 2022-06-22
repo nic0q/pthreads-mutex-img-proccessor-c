@@ -5,12 +5,10 @@
 #include <unistd.h>
 
 #include "funciones.h"
-
+int n = 0, discWidth = 0, chunk = 0, threads = 0, option,
+    b = 0;  // Se definen las variables a utilizar
 int main(int argc, char *argv[]) {
-  // Se definen las variables a utilizar
-  int n = 0, discWidth = 0, chunks = 0, threads = 0, option, IDchild = 0, b = 0;
   char *inputFile = NULL, *outputFile = NULL;
-  pid_t pid;
   while ((option = getopt(argc, argv, "i:o:n:d:h:c:b")) != -1) {
     switch (option) {
       case 'i':  // nombre del archivo de entrada
@@ -25,11 +23,11 @@ int main(int argc, char *argv[]) {
       case 'd':  // ancho de cada disco
         sscanf(optarg, "%d", &discWidth);
         break;
-      case 'h':  // ancho de cada disco
+      case 'h':  // cantidad de hebras
         sscanf(optarg, "%d", &threads);
         break;
-      case 'c':  // ancho de cada disco
-        sscanf(optarg, "%d", &chunks);
+      case 'c':  // número de líneas que la hebra lee por vez
+        sscanf(optarg, "%d", &chunk);
         break;
       case 'b':  // bandera | flag | opcional
         b = 1;
@@ -41,5 +39,37 @@ int main(int argc, char *argv[]) {
         abort();
     }
   }
-  // printf("%d %d %d ", threads, chunks, b);
+  // Verificaciones
+  if (n <= 0) {
+    printf("numero de discos inválido\n");
+    return 0;
+  }
+  if (threads <= 0) {
+    printf("Cantidad hebras invalida\n");
+    return 0;
+  }
+  if (chunk <= 0) {
+    printf("chunk invalido\n");
+    return 0;
+  }
+  if (discWidth <= 0) {
+    printf("chunk invalido\n");
+    return 0;
+  }
+  // printf("%d %d %d ", threads, chunk, b);
+  numeroDiscos = n;
+  anchoDiscos = discWidth;
+  chunksPorLeer = chunk;
+  openFile(inputFile);
+  pthread_t id;  // Identificador de la hebra
+  pthread_attr_t *hebras;
+  void *status;
+  pthread_mutex_init(&mutex, NULL);
+  for (int i = 0; i <= threads; i++) {
+    pthread_create(&id, NULL, trabajoHebras, NULL);
+    printf("%d", i);
+  }
+  for (int i = 0; i <= threads; i++) {
+    pthread_join(id, &status);
+  }
 }
