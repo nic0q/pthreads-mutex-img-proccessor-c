@@ -1,17 +1,7 @@
-#include <math.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <stdio.h>
 #include <stdlib.h>
-int numeroDiscos, anchoDiscos, chunksPorLeer;
-int cantidadde_lineas;
-#define CANT_DISCO (4)
-float media_real, media_imaginaria, potencia, ruido_total;
-float** arrayMaster;
-pthread_mutex_t mutex;
+#include <stdio.h>
+#include <math.h> 
 
-void openFile(char* name);
-void* trabajoHebras(void*  entrada);
-float originDistance(float u, float v);
+void imprimirProps(int n, float**arrayMaster);
 int getIndexProccess(int numeroDiscos, int anchoDiscos, float oDistance);
-void readfile(int tid);
+float originDistance(float u, float v);

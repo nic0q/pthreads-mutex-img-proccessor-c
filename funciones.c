@@ -1,9 +1,11 @@
 #include "funciones.h"
-
-FILE* f;  // Descriptor global
-
-float originDistance(float u, float v) { return sqrt(pow(u, 2) + pow(v, 2)); }
-
+// I: numero de discos, array a imprimir
+// O: void
+void imprimirProps(int n, float**arrayMaster) {
+  for(int i = 0;i < n;i++){
+    printf("Disco: %d\n n°Visibilidades: %f\n mediaR: %f\n mediaI: %f\n potenciaT: %f\n ruidoT: %f\n",i+1,arrayMaster[i][4],arrayMaster[i][0],arrayMaster[i][1],arrayMaster[i][2],arrayMaster[i][3]);
+  }
+}
 int getIndexProccess(int numeroDiscos, int anchoDiscos, float oDistance) {
   int j = anchoDiscos;
   if(oDistance >= (numeroDiscos - 1) * anchoDiscos) {
@@ -18,55 +20,4 @@ int getIndexProccess(int numeroDiscos, int anchoDiscos, float oDistance) {
     }
   }
 }
-
-void openFile(char* name) {
-  f = fopen(name, "r");  // Se abre el archivo
-  // printf("%d %d %d hola", numeroDiscos , anchoDiscos , chunksPorLeer);
-  if (f == NULL) {  // Si el archivo no existe.
-    printf("No se pudo abrir archivo\n");
-    exit(0);
-  }
-}
-void readFile(int tid) {
-  char buffer[1000];
-  float u, v, vis[chunksPorLeer][4];
-  int disco_actual;
-  int cont = 0;
-  while (fgets(buffer, 1000, f) != NULL) {
-    sscanf(buffer, "%f,%f,%f,%f,%f", &u, &v, &vis[cont][1], &vis[cont][2], &vis[cont][3]);
-    float oDistance = originDistance(u, v);  // Se calcula la distancia de la visibilidad al origen
-    int index = getIndexProccess(numeroDiscos, anchoDiscos, oDistance);  // Se determina a que disco pertenece la visibilidad
-    vis[cont][0] = index;
-    //printf("Hebra %i: - %i: %d y %f\n",tid, cantidadde_lineas, index, vis[cont][3]);
-    cantidadde_lineas++;
-    if(cont == chunksPorLeer){
-      break;
-    }
-    cont++;
-  }
-  for(int i = 0; i < chunksPorLeer; i++){
-    disco_actual = vis[i][0];
-    arrayMaster[disco_actual][0] += vis[i][1];
-    arrayMaster[disco_actual][1] += vis[i][2];
-    arrayMaster[disco_actual][2] += vis[i][3];
-  }
-}
-
-void* trabajoHebras(void * entrada) {
-  int cont = 0;
-  int tid = (int *)entrada;
-  while (1 == 1) {
-    pthread_mutex_lock(&mutex);  // esto nos bloquea la SC
-    printf("id: %d - %i\n", tid, cont);
-    cont += 1;
-    if(cont == 100){
-      pthread_mutex_unlock(&mutex);
-      //printf("%i\n", 9);
-      pthread_exit(NULL);
-    }
-    readFile(tid);
-    pthread_mutex_unlock(&mutex);
-  }
-}
-// 2 discos , arreglo de 2 posiciones. Y cada posicion es sub arreglo que tiene
-// las sumas importantes
+float originDistance(float u, float v) { return sqrt(pow(u, 2) + pow(v, 2)); }
