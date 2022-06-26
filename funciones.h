@@ -1,9 +1,11 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <math.h> 
+#include <stdlib.h>
+#include <math.h>
+#include <pthread.h>
+#include <unistd.h>
 
 // Cabeceras de funciones
-void imprimirProps(int n, float**arrayMaster);
-int getIndexProccess(int numeroDiscos, int anchoDiscos, float oDistance);
+int getIndexProccess(int nDisks, int diskWidth, float oDistance);
+void escribirSalida(int nProcesses, char *nameOutputFile, float** datos);
+void imprimirProps(int n, float**array);
 float originDistance(float u, float v);
-void escribirSalida(int nProcesses, char *outputFile, float** datos);
