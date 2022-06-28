@@ -23,10 +23,9 @@ void *hebras(void *tid){
       masterArray[Ndisco][2] += sqrt(pow(vis[0], 2) + pow(vis[1], 2));  // Se realiza la suma y cálculo de la potencia del punto al disco correspondiente
       masterArray[Ndisco][3] += vis[2]; // Se realiza la suma del ruido del punto al disco correspondiente
       masterArray[Ndisco][4] += 1;      // Acumulador de puntos al disco correspondiente
-      // printf("Thread %ld: Disco %d, coordenadas (%f,%f), parte real %f, parte imaginaria %f, ruido %f\n", *myID, Ndisco, u, v, vis[0], vis[1], vis[2]); // impresión de los datos del punto leido
+      // printf("ID THREAD %ld: Disco %d, coordenadas (%f,%f), parte real %f, parte imaginaria %f, ruido %f\n", *myID, Ndisco, u, v, vis[0], vis[1], vis[2]); // impresión de los datos del punto leido
 		}
     pthread_mutex_unlock(&mutex); // Se sale de la sección crítica
-    // printf("HEBRA ID %ld\n",*myId);  // Se imprime para verificar la concurrencia
   }
 }
 
