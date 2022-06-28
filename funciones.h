@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 // Cabeceras de funciones
-int getIndexProccess(int nDisks, int diskWidth, float oDistance);
 void escribirSalida(int nProcesses, char *nameOutputFile, float** datos);
+int getIndexProccess(int nDisks, int diskWidth, float oDistance);
 void imprimirProps(int n, float**array);
 float originDistance(float u, float v);

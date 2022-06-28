@@ -3,7 +3,7 @@
 int n = 0, discWidth = 0, chunk = 0, threads = 0, option, b = 0;  // Variables globales obtenidas mediante flags
 float** masterArray;  // Puntero a arreglo bidimensional para almacenar las propiedades de cada punto a leer
 FILE *f;              // Declaración del archivo mediante un FILE stream global
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;  // Declaración del mutex global
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;  // Declaración global del mutex
 
 void *hebras(void *tid){
   long *myID = (long *)tid; // Id de cada hebra para verificar que el proceso se ejecuta de forma concurrente
@@ -12,12 +12,12 @@ void *hebras(void *tid){
   while(feof(f) == 0){      // Mientras no se llegue al final de archivo
     pthread_mutex_lock(&mutex); // Se ingresa a la sección crítica
     for(int i = 0; i < chunk; i++){  // Iteracion para leer las líneas de cada chunk
-      if(feof(f) != 0){     // Si se llegó al final del archivo, se sale del ciclo
+      if(feof(f) != 0){     // Si se llegó al final del archivo mientras se esta leyendo lineas del chunk, se sale del ciclo
         break;
       }
 			fgets(buffer,sizeof(buffer),f); // Se almacena la línea del archivo en buffer
       sscanf(buffer, "%f,%f,%f,%f,%f", &u, &v, &vis[0], &vis[1], &vis[2]); // coordX, coordY, parte real, parte imaginaria, ruido
-      int Ndisco = getIndexProccess(n,discWidth,originDistance(u,v)); // se obtiene el disco al que pertenece el punto
+      int Ndisco = getIndexProccess(n,discWidth,originDistance(u,v)); // se obtiene el número de disco al que pertenece el punto
       masterArray[Ndisco][0] += vis[0]; // Se realiza la suma de la parte real del punto al disco correspondiente
       masterArray[Ndisco][1] += vis[1]; // Se realiza la suma de la parte imaginaria del punto al disco correspondiente
       masterArray[Ndisco][2] += sqrt(pow(vis[0], 2) + pow(vis[1], 2));  // Se realiza la suma y cálculo de la potencia del punto al disco correspondiente

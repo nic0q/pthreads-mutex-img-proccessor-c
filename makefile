@@ -9,12 +9,11 @@ funciones.o: funciones.c funciones.h
 clean:	# Elimina ejecutable, archivo de salida y .o's
 	rm -f *.o lab2 propiedades.txt
 
-run:		# Test de Ejemplo
+run:		# Test de Ejemplo 100000 visibilidades con vista por consola
 	./lab2 -i test10000.csv -o propiedades.txt -n 4 -d 100 -h 5 -c 3 -b
 
 runSilent:	# Test de Ejemplo sin vista por consola
 	./lab2 -i test10000.csv -o propiedades.txt -n 4 -d 100 -h 5 -c 3
 
-run100:	# Test de Ejemplo con 100 visibilidades
+run100:	# Test de Ejemplo con 100 visibilidades con vista por consola
 	./lab2 -i test100.csv -o propiedades.txt -n 4 -d 100 -h 5 -c 3 -b
-
