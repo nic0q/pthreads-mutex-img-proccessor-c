@@ -3,7 +3,7 @@
 int n = 0, discWidth = 0, chunk = 0, threads = 0, option, b = 0;  // Variables globales obtenidas mediante flags
 float** masterArray;  // Puntero a arreglo bidimensional para almacenar las propiedades de cada punto a leer
 FILE *f;              // Declaración del archivo mediante un FILE stream global
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;  // Declaración global del mutex
+pthread_mutex_t mutex; // Declaración del mutex global
 
 void *hebras(void *tid){
   long *myID = (long *)tid; // Id de cada hebra para verificar que el proceso se ejecuta de forma concurrente
@@ -23,10 +23,11 @@ void *hebras(void *tid){
       masterArray[Ndisco][2] += sqrt(pow(vis[0], 2) + pow(vis[1], 2));  // Se realiza la suma y cálculo de la potencia del punto al disco correspondiente
       masterArray[Ndisco][3] += vis[2]; // Se realiza la suma del ruido del punto al disco correspondiente
       masterArray[Ndisco][4] += 1;      // Acumulador de puntos al disco correspondiente
-      // printf("ID THREAD %ld: Disco %d, coordenadas (%f,%f), parte real %f, parte imaginaria %f, ruido %f\n", *myID, Ndisco, u, v, vis[0], vis[1], vis[2]); // impresión de los datos del punto leido
 		}
     pthread_mutex_unlock(&mutex); // Se sale de la sección crítica
+    // printf("HEBRA ID %ld\n",*myID);  // Se imprime para verificar la concurrencia
   }
+  pthread_exit(NULL); // La hebra finaliza su ejecución
 }
 
 int main(int argc, char *argv[]) {
@@ -87,6 +88,7 @@ int main(int argc, char *argv[]) {
     masterArray[i] = (float *)malloc(5 * sizeof(float));  // Se reserva memoria para cada disco
   }
   pthread_t threadsArray[threads];  // Se reserva memoria para el arreglo de hebras
+  pthread_mutex_init(&mutex, NULL); // Se inicializa el mutex
   for (int tid = 0; tid < threads; tid++) { // Se crean las hebras
     pthread_create(&threadsArray[tid], NULL, hebras, (void *)&threadsArray[tid]);
   }
@@ -103,4 +105,5 @@ int main(int argc, char *argv[]) {
   }
   escribirSalida(n, nameOutputFile, masterArray); // Se escribe el archivo de salida
   free(masterArray);  // Se libera la memoria reservada para masterArray
+  pthread_mutex_destroy(&mutex); // Se destruye el mutex
 }
