@@ -25,7 +25,6 @@ void *hebras(void *tid){
       masterArray[Ndisco][4] += 1;      // Acumulador de puntos al disco correspondiente
 		}
     pthread_mutex_unlock(&mutex); // Se sale de la sección crítica
-    // printf("HEBRA ID %ld\n",*myID);  // Se imprime para verificar la concurrencia
   }
   pthread_exit(NULL); // La hebra finaliza su ejecución
 }
