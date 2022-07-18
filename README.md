@@ -3,6 +3,9 @@ Este laboratorio consiste en la elaboración de un programa que permite leer un 
 de la biblioteca pthread, guardando el resultado en otro archivo de texto. 
 * Para una explicación completa revise el [enunciado de laboratorio](https://github.com/nic0q/LAB2-SISTOPE/blob/master/laboratorio_2_SO_1_2022.pdf).
 
+## Evaluación después de la revisión
+* Nota: 7.0 / 7.0
+
 ## Significado Flags:
 - -i: Nombre del archivo de entrada con las visibilidades
 - -o: Nombre del archivo de salida
